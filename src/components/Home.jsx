@@ -49,6 +49,7 @@ const Home = () => {
     }
     useEffect(() => {
         setToken();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return <Grid className="home">
         <Row middle="xs">
