@@ -4,12 +4,13 @@ import './index.css';
 import App from './App';
 import { Auth0Provider } from "@auth0/auth0-react";
 import reportWebVitals from './reportWebVitals';
+import { auth0ClientId, auth0Domain } from './config';
 
 ReactDOM.render(
   <React.StrictMode>
     <Auth0Provider
-    domain="use-avalanche.us.auth0.com"
-    clientId="xEn2FDsipcBnwvZJqJ6dZeQSkwfCQH4i"
+    domain={auth0Domain}
+    clientId={auth0ClientId}
     redirectUri={window.location.origin}
   >
     <App />
