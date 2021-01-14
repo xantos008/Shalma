@@ -45,6 +45,7 @@ const Home = () => {
     
 
     const handleRegisterApp = useCallback(async () => {
+        setIsLoading(true);
         await registerApp({
             appName: formData.appName,
             appUrls: formData.redirectUris
@@ -55,6 +56,7 @@ const Home = () => {
             setIdKey(activeApp.app_id);
             setSecretKey(activeApp.app_secret)
         }
+        setIsLoading(false);
     }, [formData]);
 
     if(isLoading){
