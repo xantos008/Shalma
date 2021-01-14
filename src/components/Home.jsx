@@ -1,48 +1,38 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 
-import { Input,  Button } from 'antd';
+import { Input,  Button, Skeleton } from 'antd';
 import useCopyToClipboard from '../hooks/useCopyToClipboard';
 import { Grid, Col, Row } from 'react-flexbox-grid';
 import { useAuth0 } from '@auth0/auth0-react';
+import Form from 'antd/lib/form/Form';
+import TextArea from 'antd/lib/input/TextArea';
+import { getApps, registerApp } from '../services/avalancheApi';
 
-// const register = () => {
-//     const options = {
-//         method: 'POST',
-//         url: 'https://use-avalanche.us.auth0.com/oidc/register',
-//         headers: {'content-type': 'application/json'},
-//         data: {
-//           client_name: 'My Dynamic Application',
-//           redirect_uris: [
-//             'https://application.example.com/callback',
-//             'https://application.example.com/callback2'
-//           ]
-//         }
-//       };
-      
-//       axios.request(options).then(function (response) {
-//         console.log(response.data);
-//       }).catch(function (error) {
-//         console.error(error);
-//       });
 
-// }
 
 
 
 const Home = () => {
     const { getIdTokenClaims } = useAuth0();
+    const [formData, setFormData] = useState({
+        appName: '',
+        redirectUris: ''
+    });
     const [idKey, setIdKey] = useState("");
     const [secretKey, setSecretKey] = useState("");
     const { copyToClipBoard: copyIdClipBoardSuccess} = useCopyToClipboard("Site Key");
     const { copyToClipBoard: copyKeyClipBoardSuccess} = useCopyToClipboard("Secret Key");
-    
+    const [isLoading, setIsLoading] = useState(false);
     async function setToken(){
+        setIsLoading(true);
         const token = await getIdTokenClaims();
         localStorage.setItem("access_token", token.__raw);
-        const appInfo = token["http://user/apps"];
-        if(appInfo){
-            setIdKey(appInfo.client_id);
-            setSecretKey(appInfo.client_secret);
+        const apps = await getApps();
+        setIsLoading(false);
+        const activeApp = apps[0];
+        if(activeApp){
+            setIdKey(activeApp.app_id);
+            setSecretKey(activeApp.app_secret)
         }
         
 
@@ -51,7 +41,28 @@ const Home = () => {
         setToken();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    return <Grid className="home">
+
+    
+
+    const handleRegisterApp = useCallback(async () => {
+        await registerApp({
+            appName: formData.appName,
+            appUrls: formData.redirectUris
+        });
+        const apps = await getApps();
+        const activeApp = apps[0];
+        if(activeApp){
+            setIdKey(activeApp.app_id);
+            setSecretKey(activeApp.app_secret)
+        }
+    }, [formData]);
+
+    if(isLoading){
+        return <Grid className="home">
+            <Skeleton active />
+        </Grid>
+    }
+    return idKey ? (<Grid className="home">
         <Row middle="xs">
             <Col xs={1}>
                 Site Key:
@@ -82,7 +93,49 @@ const Home = () => {
                     Copy Secret Key
                 </Button>
             </Col>
-        </Row> 
+                </Row>
+    </Grid>): <Grid className="home">
+        <Form>
+            <Row>
+                <Col xs={4}>
+                    App Name
+                </Col>
+                <Col xs={6}>
+                    <Input value={formData.appName} onChange={(e) => {
+                        setFormData(v => ({
+                            ...v,
+                            appName: e.target.value
+                        }))
+                    }} />
+                </Col>
+                
+            </Row>
+            <br />
+            <Row>
+                <Col xs={4}>
+                    Redirect Uris(comma seperated)
+                </Col>
+                <Col xs={6}>
+                    <TextArea rows={4} placeholder="http://domain.com/callback, http://domain2.com/callback" value={formData.redirectUris} onChange={(e) => {
+                        setFormData(v => ({
+                            ...v,
+                            redirectUris: e.target.value
+                        }))
+                    }} />
+                </Col>
+                
+            </Row>
+            <br />
+            <Row center="xs">
+                <Col xs={12}>
+                <Button disabled={!formData.appName || !formData.redirectUris} onClick={handleRegisterApp} size="large" type="primary">
+                    Register App
+                </Button>
+                </Col>
+                
+                
+            </Row>
+        </Form>
     </Grid>
 }
 

@@ -4,11 +4,12 @@ import {
   Route,
   Link
 } from "react-router-dom";
+import 'antd/dist/antd.css';
 import './App.css';
 import LoginButton from './components/LoginButton';
 import LogoutButton from './components/LogoutButton';
 import Profile from './components/Profile';
-import 'antd/dist/antd.css';
+
 import { ToastContainer } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
 import { useAuth0 } from '@auth0/auth0-react';
