@@ -21,17 +21,16 @@ import SubscriptionCancel from "./components/SubscriptionCancel";
 
 function App() {
   const { isAuthenticated } = useAuth0();
-  const isAuth = isAuthenticated;
   return (
     <div className="App">
        <ToastContainer />
       <Router>
-      {isAuth && <Navbar links={[<Link to="/">Home</Link>,<Link to="/profile">Profile</Link>, <Link to="/logout"><LogoutOutlined />Logout</Link>]} />}
+      {isAuthenticated && <Navbar links={[<Link to="/home">Home</Link>,<Link to="/profile">Profile</Link>, <Link to="/logout"><LogoutOutlined />Logout</Link>]} />}
         <Switch>
           <Route exact path="/">
-            {!isAuth ? <div className="login-page">
+            {!isAuthenticated ? <div className="login-page">
               <LoginButton />
-            </div>: 
+            </div>:
             <Home />}
           </Route>
 
