@@ -1,25 +1,25 @@
 import axios from 'axios';
-import jwt from 'jwt-decode';
 import { customerApiUrl } from '../config';
 
 axios.defaults.baseURL = customerApiUrl;
 
-export const getApps = async () => {
-    const data = jwt(localStorage.getItem("access_token"));
-    console.log('data is', data);
-    const resp = await axios.get(`/apps?userId=${data.sub}`);
+export const getApps = async ({
+    userId
+}) => {
+    console.log('data is', userId);
+    const resp = await axios.get(`/apps?userId=${userId}`);
     return resp.data;
 }
 
 export const registerApp = async ({
-    appName
+    appName,
+    userId,
+    email
 }) => {
-    const data = jwt(localStorage.getItem("access_token"));
-    console.log('data is', data);
     const resp = await axios.post('/apps', {
             client_name: appName,
-            email: data.email,
-            userId: data.sub
+            email,
+            userId
     });
     return resp.data;
 }
@@ -38,11 +38,10 @@ export const getSessionId = async ({ priceId }) => {
     return resp.data;
 }
 
-export const updatePayment = async () => {
-    const data = jwt(localStorage.getItem("access_token"));
+export const updatePayment = async ({ userId }) => {
     const params = new URLSearchParams();
     const resp = await axios.patch('/apps', {
-        userId: data.sub,
+        userId,
         paymentId: params.get('session_id')
     });
     return resp.data;

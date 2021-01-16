@@ -2,13 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Input,  Button, Skeleton } from 'antd';
 import useCopyToClipboard from '../hooks/useCopyToClipboard';
 import { Grid, Col, Row } from 'react-flexbox-grid';
-import { useAuth0 } from '@auth0/auth0-react';
 import Form from 'antd/lib/form/Form';
 import { getApps, registerApp } from '../services/customerApi';
 import SubscriptionAlert from './SubscriptionAlert';
 import dayjs from 'dayjs';
 import SubscriptionButton from './SubscriptionButton';
-
+import { useAuth0 } from '@auth0/auth0-react';
 
 const Home = () => {
     const { getIdTokenClaims } = useAuth0();
@@ -25,8 +24,9 @@ const Home = () => {
     async function setToken(){
         setIsLoading(true);
         const token = await getIdTokenClaims();
-        localStorage.setItem("access_token", token.__raw);
-        const apps = await getApps();
+        const apps = await getApps({
+            userId: token.sub
+        });
         setIsLoading(false);
         const activeApp = apps[0];
         if(activeApp){
@@ -45,11 +45,17 @@ const Home = () => {
 
     const handleRegisterApp = useCallback(async () => {
         setIsLoading(true);
+        const token = await getIdTokenClaims();
         await registerApp({
             appName: formData.appName,
-            appUrls: formData.redirectUris
+            appUrls: formData.redirectUris,
+            userId: token.sub,
+            email: token.email,
         });
-        const apps = await getApps();
+        
+        const apps = await getApps({
+            userId: token.sub
+        });
         const activeApp = apps[0];
         if(activeApp){
             setIdKey(activeApp.client_id);
@@ -58,7 +64,7 @@ const Home = () => {
             setShowSubscribtionAlert(activeApp.status === "registered" ? true : false);
         }
         setIsLoading(false);
-    }, [formData]);
+    }, [formData, getIdTokenClaims]);
 
     if(isLoading){
         return <Grid className="home">

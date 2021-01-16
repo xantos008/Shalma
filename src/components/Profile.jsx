@@ -4,7 +4,6 @@ import { MailTwoTone, UserOutlined } from "@ant-design/icons";
 
 const Profile = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
-
   if (isLoading) {
     return <div>Loading ...</div>;
   }

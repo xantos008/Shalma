@@ -1,12 +1,19 @@
+import { useAuth0 } from '@auth0/auth0-react';
 import { Button, Result } from 'antd';
 import React, { useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { updatePayment } from '../services/customerApi';
 
 const SubscriptionSucess = () => {
+    const { getIdTokenClaims } = useAuth0();
     const history = useHistory();
-    useEffect(() => {
-        updatePayment();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    useEffect(async () => {
+        const token = await getIdTokenClaims();
+        updatePayment({
+            userId: token.sub
+        });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return <Result
     status="success"

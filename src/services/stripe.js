@@ -3,7 +3,6 @@ import { toast } from "react-toastify";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
-console.log('key is', process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
 export const redirectToStripeCheckout = async (sessionId) => {
     const stripe = await stripePromise;
