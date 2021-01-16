@@ -25,7 +25,7 @@ function App() {
     <div className="App">
        <ToastContainer />
       <Router>
-      {isAuthenticated && <Navbar links={[<Link to="/home">Home</Link>,<Link to="/profile">Profile</Link>, <Link to="/logout"><LogoutOutlined />Logout</Link>]} />}
+      {isAuthenticated && <Navbar links={[<Link to="/">Home</Link>,<Link to="/profile">Profile</Link>, <Link to="/logout"><LogoutOutlined />Logout</Link>]} />}
         <Switch>
           <Route exact path="/">
             {!isAuthenticated ? <div className="login-page">
