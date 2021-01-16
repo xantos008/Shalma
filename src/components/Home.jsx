@@ -1,23 +1,22 @@
 import React, { useCallback, useEffect, useState } from 'react';
-
 import { Input,  Button, Skeleton } from 'antd';
 import useCopyToClipboard from '../hooks/useCopyToClipboard';
 import { Grid, Col, Row } from 'react-flexbox-grid';
 import { useAuth0 } from '@auth0/auth0-react';
 import Form from 'antd/lib/form/Form';
-import TextArea from 'antd/lib/input/TextArea';
-import { getApps, registerApp } from '../services/avalancheApi';
-
-
-
+import { getApps, registerApp } from '../services/customerApi';
+import SubscriptionAlert from './SubscriptionAlert';
+import dayjs from 'dayjs';
+import SubscriptionButton from './SubscriptionButton';
 
 
 const Home = () => {
     const { getIdTokenClaims } = useAuth0();
     const [formData, setFormData] = useState({
-        appName: '',
-        redirectUris: ''
+        appName: ''
     });
+    const [showSubscribtionAlert, setShowSubscribtionAlert] = useState(false);
+    const [registrationDate, setRegistrationDate] = useState("");
     const [idKey, setIdKey] = useState("");
     const [secretKey, setSecretKey] = useState("");
     const { copyToClipBoard: copyIdClipBoardSuccess} = useCopyToClipboard("Site Key");
@@ -31,11 +30,11 @@ const Home = () => {
         setIsLoading(false);
         const activeApp = apps[0];
         if(activeApp){
-            setIdKey(activeApp.app_id);
-            setSecretKey(activeApp.app_secret)
+            setIdKey(activeApp.client_id);
+            setSecretKey(activeApp.client_secret);
+            setRegistrationDate(activeApp.createdAt);
+            setShowSubscribtionAlert(activeApp.status === "registered" ? true : false);
         }
-        
-
     }
     useEffect(() => {
         setToken();
@@ -53,8 +52,10 @@ const Home = () => {
         const apps = await getApps();
         const activeApp = apps[0];
         if(activeApp){
-            setIdKey(activeApp.app_id);
-            setSecretKey(activeApp.app_secret)
+            setIdKey(activeApp.client_id);
+            setSecretKey(activeApp.client_secret);
+            setRegistrationDate(activeApp.createdAt);
+            setShowSubscribtionAlert(activeApp.status === "registered" ? true : false);
         }
         setIsLoading(false);
     }, [formData]);
@@ -64,7 +65,15 @@ const Home = () => {
             <Skeleton active />
         </Grid>
     }
+    const dt = dayjs(registrationDate);
     return idKey ? (<Grid className="home">
+        {showSubscribtionAlert && <SubscriptionButton />}
+        {showSubscribtionAlert && <Row middle="xs">
+            <Col xs={12}>
+                <SubscriptionAlert startDate={dt} />
+            </Col>
+        </Row>}
+        <br />
         <Row middle="xs">
             <Col xs={1}>
                 Site Key:
@@ -113,24 +122,9 @@ const Home = () => {
                 
             </Row>
             <br />
-            <Row>
-                <Col xs={4}>
-                    Redirect Uris(comma seperated)
-                </Col>
-                <Col xs={6}>
-                    <TextArea rows={4} placeholder="http://domain.com/callback, http://domain2.com/callback" value={formData.redirectUris} onChange={(e) => {
-                        setFormData(v => ({
-                            ...v,
-                            redirectUris: e.target.value
-                        }))
-                    }} />
-                </Col>
-                
-            </Row>
-            <br />
             <Row center="xs">
                 <Col xs={12}>
-                <Button disabled={!formData.appName || !formData.redirectUris} onClick={handleRegisterApp} size="large" type="primary">
+                <Button disabled={!formData.appName} onClick={handleRegisterApp} size="large" type="primary">
                     Register App
                 </Button>
                 </Col>

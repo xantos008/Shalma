@@ -38,6 +38,11 @@
   height: 600px;
 }
 
+.subscription-button{
+  position: absolute;
+  right: 6vw;
+  top: 75px;
+}
 
 .App-logo {
   height: 40vmin;
