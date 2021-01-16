@@ -8,7 +8,7 @@ const LoginButton = () => {
     if(!searchParams.get('code')){
       loginWithRedirect();
     }
-  }, []);
+  }, [loginWithRedirect]);
   return null;
 };
 
