@@ -22,7 +22,7 @@ const SubscriptionButton = () => {
             const sessionIdData = await getSessionId({
                 priceId: setupData.basicPrice
             });
-            redirectToStripeCheckout(sessionIdData.sessionId);
+            redirectToStripeCheckout(sessionIdData.sessionId, setupData.publishableKey);
         }}>Subscribe</Button>
     </div>
 }

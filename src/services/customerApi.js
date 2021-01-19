@@ -39,10 +39,10 @@ export const getSessionId = async ({ priceId }) => {
 }
 
 export const updatePayment = async ({ userId }) => {
-    const params = new URLSearchParams();
+    const { searchParams } = new URL(window.location);
     const resp = await axios.patch('/apps', {
         userId,
-        paymentId: params.get('session_id')
+        paymentId: searchParams.get('session_id')
     });
     return resp.data;
 }

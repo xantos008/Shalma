@@ -1,11 +1,9 @@
 import { loadStripe } from "@stripe/stripe-js";
 import { toast } from "react-toastify";
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY);
 
-
-export const redirectToStripeCheckout = async (sessionId) => {
-    const stripe = await stripePromise;
+export const redirectToStripeCheckout = async (sessionId, stripePublishKey) => {
+    const stripe = await loadStripe(stripePublishKey);
     const result = await stripe.redirectToCheckout({
         sessionId,
     });
