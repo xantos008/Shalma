@@ -8,6 +8,7 @@ import SubscriptionAlert from './SubscriptionAlert';
 import dayjs from 'dayjs';
 import SubscriptionButton from './SubscriptionButton';
 import { useAuth0 } from '@auth0/auth0-react';
+import TalkToUsModal from './TalkToUsModal';
 
 const Home = () => {
     const { getIdTokenClaims } = useAuth0();
@@ -21,6 +22,7 @@ const Home = () => {
     const { copyToClipBoard: copyIdClipBoardSuccess} = useCopyToClipboard("Site Key");
     const { copyToClipBoard: copyKeyClipBoardSuccess} = useCopyToClipboard("Secret Key");
     const [isLoading, setIsLoading] = useState(false);
+    const [showCalendlyModal, setShowCalendlyModal] = useState(false);
     async function setToken(){
         setIsLoading(true);
         const token = await getIdTokenClaims();
@@ -40,8 +42,6 @@ const Home = () => {
         setToken();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    
 
     const handleRegisterApp = useCallback(async () => {
         setIsLoading(true);
@@ -65,6 +65,14 @@ const Home = () => {
         }
         setIsLoading(false);
     }, [formData, getIdTokenClaims]);
+
+    const handleShowCalendly = () => {
+        setShowCalendlyModal(true);
+    };
+
+    const handleCloseCalendly = () => {
+        setShowCalendlyModal(false);
+    };
 
     if(isLoading){
         return <Grid className="home">
@@ -112,6 +120,12 @@ const Home = () => {
             </Col>
                 </Row>
     </Grid>): <Grid className="home">
+        <Button type="primary" onClick={handleShowCalendly} style={{ marginBottom: '20px' }}>
+            Talk to Us!
+        </Button>
+        {showCalendlyModal && (
+            <TalkToUsModal onClose={handleCloseCalendly} />
+        )}
         <Form>
             <Row>
                 <Col xs={4}>
@@ -125,7 +139,6 @@ const Home = () => {
                         }))
                     }} />
                 </Col>
-                
             </Row>
             <br />
             <Row center="xs">
@@ -134,8 +147,6 @@ const Home = () => {
                     Register App
                 </Button>
                 </Col>
-                
-                
             </Row>
         </Form>
     </Grid>

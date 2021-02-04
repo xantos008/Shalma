@@ -9,6 +9,7 @@ import './App.css';
 import LoginButton from './components/LoginButton';
 import LogoutButton from './components/LogoutButton';
 import Profile from './components/Profile';
+import TalkToUsPage from './components/TalkToUsPage';
 
 import { ToastContainer } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
@@ -25,15 +26,25 @@ function App() {
     <div className="App">
        <ToastContainer />
       <Router>
-      {isAuthenticated && <Navbar links={[<Link to="/">Home</Link>,<Link to="/profile">Profile</Link>, <Link to="/logout"><LogoutOutlined />Logout</Link>]} />}
+      {isAuthenticated &&
+        <Navbar
+          links={[
+            <Link to="/">Home</Link>,
+            <Link to="/profile">Profile</Link>,
+            <Link to="/talk-to-us">Talk To Us</Link>,
+            <Link to="/logout"><LogoutOutlined />Logout</Link>,
+          ]}
+        />}
         <Switch>
+          <Route exact path="/talk-to-us">
+            <TalkToUsPage />
+          </Route>
           <Route exact path="/">
             {!isAuthenticated ? <div className="login-page">
               <LoginButton />
             </div>:
             <Home />}
           </Route>
-
           <Route exact path="/profile">
             <div className="profile-page">
               <Profile />
