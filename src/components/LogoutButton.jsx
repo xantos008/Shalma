@@ -6,6 +6,7 @@ const LogoutButton = () => {
 
   useEffect(() => {
     localStorage.removeItem("access_token");
+    localStorage.removeItem("ads_method");
     logout({ returnTo: window.location.origin })
   }, [logout])
 

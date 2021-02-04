@@ -4,7 +4,8 @@ import { CloseOutlined } from "@ant-design/icons";
 import { Typography } from 'antd';
 
 const TalkToUsModal = (props) => {
-  const { onClose } = props;
+  const { onClose, duration } = props;
+  const CALENDLY_USERNAME = "kamilla-kenzhekhankyzy";
   return (
     <div className="talk-modal">
       <div className="modal-content">
@@ -16,7 +17,7 @@ const TalkToUsModal = (props) => {
         </div>
         <InlineWidget
           styles={{ width: '700px', height: '500px', borderRadius: '10px' }}
-          url="https://calendly.com/kamilla-kenzhekhankyzy"
+          url={`https://calendly.com/${CALENDLY_USERNAME}/${duration}`}
         />
         </div>
     </div>
