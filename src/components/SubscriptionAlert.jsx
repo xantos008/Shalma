@@ -2,7 +2,7 @@ import React from 'react';
 import dayjs from 'dayjs';
 import { Alert } from 'antd';
 
-const SubscriptionAlert = ({ startDate, maxDays = 30 }) => {
+const SubscriptionAlert = ({ startDate, maxDays = 14 }) => {
     const nowDate = dayjs();
     const stDate = dayjs(startDate);
     const diff = maxDays - nowDate.diff(stDate, "days");
