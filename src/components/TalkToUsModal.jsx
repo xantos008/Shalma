@@ -5,7 +5,7 @@ import { Typography } from 'antd';
 
 const TalkToUsModal = (props) => {
   const { onClose, duration } = props;
-  const CALENDLY_USERNAME = "kamilla-kenzhekhankyzy";
+  const CALENDLY_USERNAME = "ijan-1";
   return (
     <div className="talk-modal">
       <div className="modal-content">

@@ -3,7 +3,7 @@ import { InlineWidget } from 'react-calendly';
 import { Grid } from 'react-flexbox-grid';
 
 const TalkToUsPage = () => {
-  const CALENDLY_USERNAME = "kamilla-kenzhekhankyzy";
+  const CALENDLY_USERNAME = "ijan-1";
   return (
     <Grid className="talk-page">
         <InlineWidget
