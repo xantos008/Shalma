@@ -5,6 +5,7 @@ import App from './App';
 import { Auth0Provider } from "@auth0/auth0-react";
 import reportWebVitals from './reportWebVitals';
 import { auth0ClientId, auth0Domain } from './config';
+import 'bootstrap/dist/css/bootstrap.css';
 
 ReactDOM.render(
   <React.StrictMode>

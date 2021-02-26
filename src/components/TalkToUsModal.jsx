@@ -1,10 +1,10 @@
 import React from 'react';
-import { InlineWidget } from 'react-calendly';
+//import { InlineWidget } from 'react-calendly';
 import { CloseOutlined } from "@ant-design/icons";
 import { Typography } from 'antd';
 
 const TalkToUsModal = (props) => {
-  const { onClose, duration } = props;
+  const { onClose } = props;
   const CALENDLY_USERNAME = "ijan-1";
   return (
     <div className="talk-modal">
@@ -15,9 +15,10 @@ const TalkToUsModal = (props) => {
             <CloseOutlined style={{ fontSize: '20px', color: '#787878' }} />
           </div>
         </div>
-        <InlineWidget
-          styles={{ width: '700px', height: '500px', borderRadius: '10px' }}
-          url={`https://calendly.com/${CALENDLY_USERNAME}/${duration}`}
+        <iframe
+		  title="Avalanche Calendly"
+		  style={{ width: '700px', height: '500px', borderRadius: '10px', border: 'none' }}
+          src={`https://calendly.com/${CALENDLY_USERNAME}?embed_domain=refer-customer-dashboard.vercel.app&embed_type=Inline`}
         />
         </div>
     </div>

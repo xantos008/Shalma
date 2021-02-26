@@ -1,6 +1,7 @@
 
 .App {
   text-align: center;
+  padding-bottom: 50px;
 }
 
 .full-width{
@@ -35,7 +36,7 @@
   margin-top: 50px;
   padding-top: 200px;
   background-color: #e9ecef;
-  height: 600px;
+  height: auto;
 }
 
 .subscription-button{
@@ -170,4 +171,49 @@
   justify-content: center;
   padding-top: 10px;
   height: 820px;
+}
+
+.ant-btn > .anticon {
+    display: inline-flex;
+}
+.ant-btn > span {
+    top: -1px;
+    position: relative;
+}
+.ant-menu-item .anticon {
+    display: inline-flex;
+}
+.ant-menu-dark .ant-menu-item:hover > a, .ant-menu-dark .ant-menu-item-active > a {
+    text-decoration: none;
+}
+.home.container .col-1 {
+    font-size: 14px;
+    padding-right: 0;
+    display: flex;
+    align-items: center;
+}
+.redButton{
+	background: #d72424;
+	border-color: #d72424;
+}
+.redButton:hover{
+	background: #ed2e2e;
+	border-color: #ed2e2e;
+}
+.addDomen, .removeDomen {
+    margin: 0 5px;
+    line-height: 1.4;
+}
+.domen {
+    display: flex;
+    align-items: center;
+	margin-bottom: 10px;
+}
+
+.logo {
+    width: 30%;
+	padding-right: 2%;
+}
+.logo img {
+    width: 100%;
 }

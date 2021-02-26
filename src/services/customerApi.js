@@ -8,18 +8,21 @@ export const getApps = async ({
 }) => {
     console.log('data is', userId);
     const resp = await axios.get(`/apps?userId=${userId}`);
+    console.log('resp.data', resp.data);
     return resp.data;
 }
 
 export const registerApp = async ({
     appName,
     userId,
+	domens,
     email
 }) => {
     const resp = await axios.post('/apps', {
             client_name: appName,
             email,
-            userId
+            userId,
+			domens
     });
     return resp.data;
 }
@@ -43,6 +46,14 @@ export const updatePayment = async ({ userId }) => {
     const resp = await axios.patch('/apps', {
         userId,
         paymentId: searchParams.get('session_id')
+    });
+    return resp.data;
+}
+
+export const updateDomens = async ({ userId, domens }) => {
+    const resp = await axios.patch('/apps/update', {
+        userId,
+        domens: domens
     });
     return resp.data;
 }

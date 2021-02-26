@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Input,  Button, Skeleton, Typography } from 'antd';
 import useCopyToClipboard from '../hooks/useCopyToClipboard';
-import { Grid, Col, Row } from 'react-flexbox-grid';
+//import { Grid, Col, Row } from 'react-flexbox-grid';
+import { Container, Row, Col } from 'reactstrap';
 import Form from 'antd/lib/form/Form';
-import { getApps, registerApp } from '../services/customerApi';
+import { getApps, registerApp, updateDomens } from '../services/customerApi';
 import SubscriptionAlert from './SubscriptionAlert';
 import dayjs from 'dayjs';
 import SubscriptionButton from './SubscriptionButton';
@@ -26,13 +27,12 @@ const Home = () => {
         return result;
      };
 
-    const [formData, setFormData] = useState({
-        appName: generateAppName(10)
-    });
+    
     const [showSubscribtionAlert, setShowSubscribtionAlert] = useState(false);
     const [registrationDate, setRegistrationDate] = useState("");
     const [idKey, setIdKey] = useState("");
     const [secretKey, setSecretKey] = useState("");
+    const [domens, setDomens] = useState([]);
     const { copyToClipBoard: copyIdClipBoardSuccess} = useCopyToClipboard("Site Key");
     const { copyToClipBoard: copyKeyClipBoardSuccess} = useCopyToClipboard("Secret Key");
     const [isLoading, setIsLoading] = useState(false);
@@ -40,7 +40,15 @@ const Home = () => {
     const [adsMethod, setAdsMethod] = useState('');
     const [calendlyDuration, setCalendlyDuration] = useState("");
     const [errorMessage, setErrorMessage] = useState('');
-    async function setToken(){
+	const [inputList, setInputList] = useState([{value: ""}]);
+	const [lastIndex, setLastIndex] = useState(0);
+	
+	const [formData, setFormData] = useState({
+        appName: generateAppName(10),
+		domens: inputList
+    });	
+    
+	async function setToken(){
         setIsLoading(true);
         const token = await getIdTokenClaims();
         const apps = await getApps({
@@ -51,6 +59,8 @@ const Home = () => {
         if(activeApp){
             setIdKey(activeApp.client_id);
             setSecretKey(activeApp.client_secret);
+			setDomens(activeApp.domens);
+			setInputList(activeApp.domens[0]);
             setRegistrationDate(activeApp.createdAt);
             setShowSubscribtionAlert(activeApp.status === "registered" ? true : false);
         }
@@ -78,6 +88,7 @@ const Home = () => {
         await registerApp({
             appName: formData.appName,
             appUrls: formData.redirectUris,
+			domens: formData.domens,
             userId: token.sub,
             email: token.email,
         });
@@ -89,12 +100,16 @@ const Home = () => {
         if(activeApp){
             setIdKey(activeApp.client_id);
             setSecretKey(activeApp.client_secret);
+			setDomens(activeApp.domens);
+			setInputList(activeApp.domens[0]);
             setRegistrationDate(activeApp.createdAt);
             setShowSubscribtionAlert(activeApp.status === "registered" ? true : false);
         }
         setIsLoading(false);
     }, [formData, getIdTokenClaims]);
-
+	
+	
+	
     const handleMenuClick = (e) => {
         setAdsMethod(`${e.key}`);
         localStorage.setItem('ads_method', e.key);
@@ -112,6 +127,100 @@ const Home = () => {
         setCalendlyDuration("60min");
         setShowCalendlyModal(true);
     };
+	
+	const handleAddDomen = () => {
+		setInputList([...inputList, { value: "" }]);
+	};
+	
+	const handleRemoveDomen = index => {
+		const list = [...inputList];
+		list.splice(index, 1);
+		setInputList(list);
+	};
+	
+	const handleDomenChange = (e, index) => {
+		const { value } = e.target;
+		const list = [...inputList];
+		list[index]['value'] = value;
+		setInputList(list);
+		setFormData(v => ({
+                            ...v,
+                            domens: inputList
+                        }))
+		setLastIndex(index);
+	};
+	
+	const handleFocusChange = (index) => {
+		if(index === lastIndex){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	const handleUpdateDomens = useCallback(async () => {
+		const token = await getIdTokenClaims();
+		await updateDomens({
+			domens: formData.domens,
+            userId: token.sub,
+        });
+	}, [formData, getIdTokenClaims]);
+	
+	console.log('domens', domens)
+	console.log('inputList', inputList)
+	
+	const DomensList = () => {
+		if(domens && domens.length > 0){
+			return (
+			<div className="domensList">				
+				{inputList.map((x, i) => {
+					return (
+						<div className="domen">
+							<input name="domens[]" key={i} value={x.value} autoFocus={handleFocusChange(i)} placeholder="https://yoursite.address" onChange={e => handleDomenChange(e, i)} />
+							<div className="addAndRemove">
+								{inputList.length - 1 === i && 
+									<div className="addDomen ant-btn ant-btn-primary" onClick={handleAddDomen}>
+										+
+									</div>
+								}
+								{inputList.length !== 1 &&
+								<div className="removeDomen ant-btn ant-btn-primary redButton" onClick={() => handleRemoveDomen(i)}>
+									-
+								</div>
+								}
+							</div>
+						</div>
+					)
+				})}
+				
+			</div>
+			)
+		} else {
+			return ( 
+			<div className="domensList">
+				{inputList.map((x, i) => {
+					return (
+						<div className="domen">
+							<input key={i} name="domens[]" autoFocus={handleFocusChange(i)} value={x.value} placeholder="https://yoursite.address" onChange={e => handleDomenChange(e, i)} />
+							<div className="addAndRemove">
+								{inputList.length - 1 === i && 
+									<div className="addDomen ant-btn ant-btn-primary" onClick={handleAddDomen}>
+										+
+									</div>
+								}
+								{inputList.length !== 1 &&
+								<div className="removeDomen ant-btn ant-btn-primary redButton" onClick={() => handleRemoveDomen(i)}>
+									-
+								</div>
+								}
+							</div>
+						</div>
+					)
+				})}
+			</div> 
+			)
+		}
+	};
 
     const menu = (
         <Menu onClick={handleMenuClick}>
@@ -141,12 +250,13 @@ const Home = () => {
     };
 
     if(isLoading){
-        return <Grid className="home">
+        return <Container className="home">
             <Skeleton active />
-        </Grid>
+        </Container>
     }
     const dt = dayjs(registrationDate);
-    return idKey ? (<Grid className="home">
+	
+    return idKey ? (<Container className="home">
         {showSubscribtionAlert && <SubscriptionButton />}
         {showSubscribtionAlert && <Row middle="xs">
             <Col xs={12}>
@@ -185,8 +295,23 @@ const Home = () => {
                 </Button>
             </Col>
         </Row>
+		
         <br />
         <br />
+		
+		<DomensList />
+		
+		<Row middle="xs">
+            <Col xs={4}>
+                <Button className="full-width" type="primary" onClick={handleUpdateDomens} style={{ marginBottom: '20px', marginRight: '20px' }}>
+                    Update Domains
+                </Button>
+            </Col>
+		</Row>
+		
+        <br />
+        <br />
+		
         <Row middle="xs">
             <Col xs={4}>
                 <Button type="primary" onClick={handleSalesCalendly} style={{ marginBottom: '20px', marginRight: '20px' }}>
@@ -212,7 +337,7 @@ const Home = () => {
         {showCalendlyModal && (
             <TalkToUsModal onClose={handleCloseCalendly} duration={calendlyDuration} />
         )}
-    </Grid>): <Grid className="home">
+    </Container>): <Container className="home">
         <Row style={{ marginBottom: '30px' }}>
             <Col xs={3} style={{ display: 'flex', marginLeft: '130px' }}>
                 <Typography style={{ marginRight: '10px' }}> How did you hear about us? </Typography>
@@ -252,17 +377,24 @@ const Home = () => {
                     }} />
                 </Col>
             </Row>
+			
             <br />
-            <br />
+			<br />
+			
+			<DomensList />
+			
+			<br />
+			<br />
+			
             <Row center="xs">
                 <Col xs={12}>
-                <Button disabled={!formData.appName} onClick={handleRegisterApp} size="large" type="primary">
+                <Button disabled={!formData.appName && !formData.domens} onClick={handleRegisterApp} size="large" type="primary">
                     Next
                 </Button>
                 </Col>
             </Row>
         </Form>
-    </Grid>
+    </Container>
 }
 
 export default Home;

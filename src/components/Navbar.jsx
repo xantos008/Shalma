@@ -5,7 +5,9 @@ const { Header } = Layout;
 const Navbar = ({ links = [] }) => {
     return  <Layout>
     <Header className="header">
-      <div className="logo" />
+      <div className="logo" >
+		<img src="/logo.svg" />
+	  </div>
       <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[0]}>
         
         {links.map((link, index) => <Menu.Item className={index === links.length - 1 ? "last": ""} key={index}>{link}</Menu.Item>)}
