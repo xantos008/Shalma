@@ -42,6 +42,7 @@ const Home = () => {
     const [errorMessage, setErrorMessage] = useState('');
 	const [inputList, setInputList] = useState([{value: ""}]);
 	const [lastIndex, setLastIndex] = useState(0);
+	const [lastIndexPoint, setLastIndexPoint] = useState(0);
 	
 	const [formData, setFormData] = useState({
         appName: generateAppName(10),
@@ -68,7 +69,7 @@ const Home = () => {
             setIdKey(activeApp.client_id);
             setSecretKey(activeApp.client_secret);
 			setDomens(activeApp.domens);
-			setInputList(activeApp.domens[0]);
+			setInputList(activeApp.domens);
             setRegistrationDate(activeApp.createdAt);
             setShowSubscribtionAlert(activeApp.status === "registered" ? true : false);
         }
@@ -118,7 +119,7 @@ const Home = () => {
             setIdKey(activeApp.client_id);
             setSecretKey(activeApp.client_secret);
 			setDomens(activeApp.domens);
-			setInputList(activeApp.domens[0]);
+			setInputList(activeApp.domens);
             setRegistrationDate(activeApp.createdAt);
             setShowSubscribtionAlert(activeApp.status === "registered" ? true : false);
         }
@@ -165,7 +166,32 @@ const Home = () => {
                             domens: inputList
                         }))
 		setLastIndex(index);
+		setLastIndexPoint(e.target.selectionStart);
+		setCaretPosition(e.target, lastIndexPoint);
+		//start = e.target.selectionStart;
+		//end = e.target.selectionEnd;		
 	};
+	
+	const handleDomenClick = (e, i) => {
+		setLastIndex(i);
+		setLastIndexPoint(e.target.selectionStart);
+	}
+	
+	const setCaretPosition = (ctrl, pos) => {
+	  // Modern browsers
+	  if (ctrl.setSelectionRange) {
+		ctrl.focus();
+		ctrl.setSelectionRange(pos, pos);
+	  
+	  // IE8 and below
+	  } else if (ctrl.createTextRange) {
+		var range = ctrl.createTextRange();
+		range.collapse(true);
+		range.moveEnd('character', pos);
+		range.moveStart('character', pos);
+		range.select();
+	  }
+	}
 	
 	const handleFocusChange = (index) => {
 		if(index === lastIndex){
@@ -173,6 +199,14 @@ const Home = () => {
 		} else {
 			return false;
 		}
+	}
+	
+	const handleOnFocus = (e,i) => {
+		setCaretPosition(e.target, lastIndexPoint);
+	}
+	
+	const unFocusDomens = () => {
+		setLastIndex(999);
 	}
 	
 	const handleUpdateDomens = useCallback(async () => {
@@ -192,8 +226,8 @@ const Home = () => {
 			<div className="domensList">				
 				{inputList.map((x, i) => {
 					return (
-						<div className="domen">
-							<input name="domens[]" key={i} value={x.value} autoFocus={handleFocusChange(i)} placeholder="https://yoursite.address" onChange={e => handleDomenChange(e, i)} />
+						<div className="domen" key={i ? i : 0}>
+							<input name="domens[]" key={i ? i : 0} value={x.value} onClick={e => handleDomenClick(e,i)} onFocus={e => handleOnFocus(e,i)} autoFocus={handleFocusChange(i)} placeholder="https://yoursite.address" onChange={e => handleDomenChange(e, i)} />
 							<div className="addAndRemove">
 								{inputList.length - 1 === i && 
 									<div className="addDomen ant-btn ant-btn-primary" onClick={handleAddDomen}>
@@ -217,8 +251,8 @@ const Home = () => {
 			<div className="domensList">
 				{inputList.map((x, i) => {
 					return (
-						<div className="domen">
-							<input key={i} name="domens[]" autoFocus={handleFocusChange(i)} value={x.value} placeholder="https://yoursite.address" onChange={e => handleDomenChange(e, i)} />
+						<div className="domen" key={i ? i : 0}>
+							<input key={i ? i : 0} name="domens[]" onClick={e => handleDomenClick(e,i)} onFocus={e => handleOnFocus(e,i)} autoFocus={handleFocusChange(i)} value={x.value} placeholder="https://yoursite.address" onChange={e => handleDomenChange(e, i)} />
 							<div className="addAndRemove">
 								{inputList.length - 1 === i && 
 									<div className="addDomen ant-btn ant-btn-primary" onClick={handleAddDomen}>
@@ -391,6 +425,7 @@ const Home = () => {
                             ...v,
                             appName: e.target.value
                         }))
+						unFocusDomens()
                     }} />
                 </Col>
             </Row>
@@ -405,7 +440,7 @@ const Home = () => {
 			
             <Row center="xs">
                 <Col xs={12}>
-                <Button disabled={!formData.appName && !formData.domens} onClick={handleRegisterApp} size="large" type="primary">
+                <Button disabled={!formData.appName || (formData.domens && formData.domens[0] && formData.domens[0].value.length === 0)} onClick={handleRegisterApp} size="large" type="primary">
                     Next
                 </Button>
                 </Col>
