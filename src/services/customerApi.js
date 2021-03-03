@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { customerApiUrl } from '../config';
+import { customerApiUrl, avalancheApiUrl } from '../config';
 
 axios.defaults.baseURL = customerApiUrl;
 
@@ -54,6 +54,20 @@ export const updateDomens = async ({ userId, domens }) => {
     const resp = await axios.patch('/apps/update', {
         userId,
         domens: domens
+    });
+    return resp.data;
+}
+
+export const getAppData = async ( {client_id} ) => {
+    const resp = await axios.get(avalancheApiUrl + '/events/all_referred_users?clientId='+client_id);
+    return resp.data;
+}
+
+
+export const updateAppUiPreferences = async ( {data, userId} ) => {
+    const resp = await axios.patch('/apps/updater/preferences', {
+        userId,
+        preferences: data
     });
     return resp.data;
 }

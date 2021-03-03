@@ -11,6 +11,7 @@ import LogoutButton from './components/LogoutButton';
 import Profile from './components/Profile';
 import TalkToUsPage from './components/TalkToUsPage';
 import Statistics from './components/Statistics';
+import Customize from './components/Customize';
 
 import { ToastContainer } from 'react-toastify';
   import 'react-toastify/dist/ReactToastify.css';
@@ -34,12 +35,16 @@ function App() {
             <Link to="/profile">Profile</Link>,
             <Link to="/talk-to-us">Talk To Us</Link>,
             <Link to="/statistics">Statistics</Link>,
+            <Link to="/custom-settings">Settings</Link>,
             <Link to="/logout"><LogoutOutlined />Logout</Link>,
           ]}
         />}
         <Switch>
           <Route exact path="/talk-to-us">
             <TalkToUsPage />
+          </Route>
+		  <Route exact path="/custom-settings">
+            <Customize />
           </Route>
 		  <Route exact path="/statistics">
             <Statistics />

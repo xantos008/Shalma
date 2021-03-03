@@ -56,7 +56,15 @@ const Home = () => {
         });
         setIsLoading(false);
         const activeApp = apps[0];
-        if(activeApp){
+		if(apps.uiPreferences){
+			localStorage.setItem('uiPreferences', JSON.stringify(apps.uiPreferences));
+		} else {
+			localStorage.setItem('uiPreferences', undefined);
+		}
+        if(activeApp){			
+			localStorage.setItem('client_id', activeApp.client_id);
+			localStorage.setItem('userId', token.sub);
+						
             setIdKey(activeApp.client_id);
             setSecretKey(activeApp.client_secret);
 			setDomens(activeApp.domens);
@@ -96,8 +104,17 @@ const Home = () => {
         const apps = await getApps({
             userId: token.sub
         });
+		console.log(apps)
         const activeApp = apps[0];
+		if(apps.uiPreferences){
+			localStorage.setItem('uiPreferences', JSON.stringify(apps.uiPreferences));
+		} else {
+			localStorage.setItem('uiPreferences', undefined);
+		}
         if(activeApp){
+			localStorage.setItem('client_id', activeApp.client_id);
+			localStorage.setItem('userId', token.sub);
+						
             setIdKey(activeApp.client_id);
             setSecretKey(activeApp.client_secret);
 			setDomens(activeApp.domens);

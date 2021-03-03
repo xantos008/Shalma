@@ -1,0 +1,33 @@
+
+.color-picker-container {
+  position: relative;
+  display: flex;
+}
+.color-picker-palette {
+  position: absolute;
+  z-index: 100;
+}
+
+.color-picker-cover {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  right: 0px;
+}
+
+.color-picker-color-background {
+  height: 35px;
+  width: 35px;
+  background-color: #ffffff;
+  border: 2px solid;
+  border-radius: 50px;
+    cursor: pointer;
+}
+.color-picker-text {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    height: 35px;
+    padding-left: 15px;
+}

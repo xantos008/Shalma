@@ -1,4 +1,4 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
 .App {
   text-align: center;
   padding-bottom: 50px;
@@ -216,4 +216,152 @@
 }
 .logo img {
     width: 100%;
+}
+
+.overFall {
+    max-width: 100%;
+    width: 100%;
+    overflow-x: scroll;
+}
+.pagination {
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+.pagination .pageNumber, .pagination .paginationActions, .pagination .paginationCount {
+    flex: 1;
+}
+.pagination .pageNumber {
+    text-align: left;
+}
+.pagination .paginationCount {
+    text-align: right;
+}
+.pageNumber input {
+    padding: 0 0 0 10px;
+    text-align: center;
+	border-radius: 5px;
+}
+.pagination .forwardPrev, .pagination .prev, .pagination .next, .pagination .forwardNext {
+    background: linear-gradient(180deg, rgba(24,144,255,1) 30%, rgba(98,179,255,1) 100%);
+    border: none;
+    color: #fff;
+    border-radius: 50px;
+    width: 33px;
+    height: 33px;
+    align-items: center;
+    justify-content: center;
+	padding-bottom: 4px;
+    cursor: pointer;
+}
+.pagination .forwardPrev:hover:not([disabled]), .pagination .prev:hover:not([disabled]), .pagination .next:hover:not([disabled]), .pagination .forwardNext:hover:not([disabled]) {
+	 background: rgba(24,144,255,1);
+}
+.forwardPrev[disabled], .prev[disabled], .next[disabled], .forwardNext[disabled] {
+    background: #efefef4d;
+	color: #c6c6c6;
+}
+
+.paginationCount select {
+    border-radius: 5px;
+    padding: 4px 4px 5px 4px;
+    border: 2px solid;
+}
+.settingForm .form-field {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+	margin-top: 30px;
+}
+.settingForm .field-title {
+    width: 100px;
+    text-align: left;
+}
+.field-selection {
+    padding: 0 0 0 15px;
+}
+.colorPicker {
+    padding: 0 0 0 15px;
+	flex: 1;
+}
+input[name="backgroundPicture"] {
+    margin-left: 15px;
+}
+.settingForm .form-field input {
+    width: 100%;
+}
+.settingsButton {
+	width: 150px;
+	margin-top: 30px;
+	padding-bottom: 5px;
+}
+
+.linksRow .ShareButton {
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+.linksRow .ShareButton svg {
+    margin-right: 10px;
+}
+.linksRow {
+    display: -webkit-flex;
+    display: -moz-box;
+    display: flex;
+    -webkit-flex-direction: row;
+    -moz-box-orient: horizontal;
+    -moz-box-direction: normal;
+    flex-direction: row;
+    -webkit-justify-content: space-around;
+    justify-content: space-around;
+	-webkit-align-items: center;
+    -moz-box-align: center;
+    align-items: center;
+	max-width: 337px;
+	margin: 0 auto;
+}
+.linksRow.secondsRow {
+    margin-top: 24px;
+}
+.invite_container_google-button {
+    font-size: 16px;
+    color: #1a90ff;
+}
+.container_content {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+	flex-direction: row;
+    flex-wrap: wrap;
+	margin-top: 50px;
+	border: 1px solid;
+    padding: 50px 0;
+	font-family: Montserrat;
+	background-repeat: no-repeat !important;
+    background-size: 100% 100% !important;
+}
+.container_content > div {
+    width: 100%;
+    justify-content: center;
+}
+#horizontal_login {
+    justify-content: center;
+    margin-top: 22px;
+}
+.container_row.row {
+    max-width: 368px;
+}
+
+@media screen and (max-width: 368px){
+	.buttonInvite {
+		width: 100%;
+		max-width: calc(100% - 15px);
+		margin-top: 10px;
+	}
+}
+.previewText {
+    font-size: 28px;
+    text-align: left;
+    margin-top: 20px;
 }

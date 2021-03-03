@@ -6,7 +6,7 @@ const Navbar = ({ links = [] }) => {
     return  <Layout>
     <Header className="header">
       <div className="logo" >
-		<img src="/logo.svg" />
+		<img alt="Avalanche logo" src="/logo.svg" />
 	  </div>
       <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[0]}>
         
