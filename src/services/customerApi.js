@@ -64,6 +64,12 @@ export const getAppData = async ( {client_id} ) => {
 }
 
 
+export const getUiPreferences = async ( {userId} ) => {
+    const resp = await axios.patch('/apps/preferences/get', {
+        userId
+    });
+    return resp.data;
+}
 export const updateAppUiPreferences = async ( {data, userId} ) => {
     const resp = await axios.patch('/apps/updater/preferences', {
         userId,

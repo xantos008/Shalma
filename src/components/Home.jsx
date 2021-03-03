@@ -4,7 +4,7 @@ import useCopyToClipboard from '../hooks/useCopyToClipboard';
 //import { Grid, Col, Row } from 'react-flexbox-grid';
 import { Container, Row, Col } from 'reactstrap';
 import Form from 'antd/lib/form/Form';
-import { getApps, registerApp, updateDomens } from '../services/customerApi';
+import { getApps, registerApp, updateDomens, getUiPreferences } from '../services/customerApi';
 import SubscriptionAlert from './SubscriptionAlert';
 import dayjs from 'dayjs';
 import SubscriptionButton from './SubscriptionButton';
@@ -55,10 +55,13 @@ const Home = () => {
         const apps = await getApps({
             userId: token.sub
         });
+		const uiPreferences = await getUiPreferences({
+			userId: token.sub
+		});
         setIsLoading(false);
         const activeApp = apps[0];
-		if(apps.uiPreferences){
-			localStorage.setItem('uiPreferences', JSON.stringify(apps.uiPreferences));
+		if(uiPreferences && uiPreferences.uiPreferences){
+			localStorage.setItem('uiPreferences', JSON.stringify(uiPreferences.uiPreferences));
 		} else {
 			localStorage.setItem('uiPreferences', undefined);
 		}
@@ -105,10 +108,13 @@ const Home = () => {
         const apps = await getApps({
             userId: token.sub
         });
-		console.log(apps)
+		const uiPreferences = await getUiPreferences({
+			userId: token.sub
+		});
+		
         const activeApp = apps[0];
-		if(apps.uiPreferences){
-			localStorage.setItem('uiPreferences', JSON.stringify(apps.uiPreferences));
+		if(uiPreferences && uiPreferences.uiPreferences){
+			localStorage.setItem('uiPreferences', JSON.stringify(uiPreferences.uiPreferences));
 		} else {
 			localStorage.setItem('uiPreferences', undefined);
 		}
