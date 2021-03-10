@@ -18,12 +18,25 @@ const SubscriptionButton = () => {
     }, []);
     
     return <div className="subscription-button">
-        <Button icon={<DollarCircleOutlined />} type="primary" onClick={async () => {
+        <Button
+            icon={<DollarCircleOutlined />}
+            type="primary"
+            onClick={async () => {
             const sessionIdData = await getSessionId({
                 priceId: setupData.basicPrice
             });
             redirectToStripeCheckout(sessionIdData.sessionId, setupData.publishableKey);
-        }}>Subscribe</Button>
+            }}
+            style={{
+                color: '#284866',
+                border: '2px solid #284866',
+                backgroundColor: 'white',
+                borderRadius: '10px',
+                height: '48px',
+            }}
+        >
+            Subscribe
+        </Button>
     </div>
 }
 

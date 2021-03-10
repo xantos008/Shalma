@@ -1,4 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&display=swap');
+
 .App {
   text-align: center;
   padding-bottom: 50px;
@@ -26,6 +28,7 @@
 .header, .ant-menu{
   display: flex;
   width: 100%;
+  font-family: 'DM Sans'
 }
 
 .last{
@@ -34,15 +37,14 @@
 
 .home{
   margin-top: 50px;
-  padding-top: 200px;
-  background-color: #e9ecef;
   height: auto;
+  font-family: 'DM Sans';
 }
 
 .subscription-button{
   position: absolute;
   right: 6vw;
-  top: 75px;
+  top: 110px;
 }
 
 .App-logo {
@@ -138,9 +140,9 @@
   background: rgba(0, 0, 0, 0.45);
   padding: 30px;
   border-radius: 10px;
-  height: 600px; 
-  top: 0;
-  left: 0;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   height: 100vh;
   width: 100vw;
   position: fixed;
@@ -193,8 +195,8 @@
     align-items: center;
 }
 .redButton{
-	background: #d72424;
-	border-color: #d72424;
+	background: #d95403;
+	border-color: #d95403;
 }
 .redButton:hover{
 	background: #ed2e2e;
@@ -202,7 +204,9 @@
 }
 .addDomen, .removeDomen {
     margin: 0 5px;
-    line-height: 1.4;
+    line-height: 2;
+    height: 40px;
+    border-radius: 6px;
 }
 .domen {
     display: flex;
@@ -364,4 +368,28 @@ input[name="backgroundPicture"] {
     font-size: 28px;
     text-align: left;
     margin-top: 20px;
+}
+
+.domainsListContainer {
+  text-align: start;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.2);
+  width: '100%'
+}
+
+.domain-input {
+  width: 320px;
+  height: 40px;
+  border: 2px solid rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+  padding: 4px;
+}
+
+.domain-input:focus {
+  outline: none;
+  border: none;
+  border: 2px solid #FFB200;
 }
