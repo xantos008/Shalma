@@ -343,7 +343,16 @@ const Home = () => {
     const dt = dayjs(registrationDate);
 	
     return idKey ? (<Container className="home">
-        {showSubscribtionAlert && <SubscriptionButton />}
+        {showSubscribtionAlert && 
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    marginBottom: '30px',
+                }}>
+                <SubscriptionButton />
+            </div>
+        }
         {showSubscribtionAlert && <Row middle="xs">
             <Col xs={4}>
                 <SubscriptionAlert startDate={dt} />

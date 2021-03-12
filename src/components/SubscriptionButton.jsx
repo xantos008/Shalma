@@ -28,12 +28,14 @@ const SubscriptionButton = () => {
             redirectToStripeCheckout(sessionIdData.sessionId, setupData.publishableKey);
             }}
             style={{
-                color: '#284866',
-                border: '2px solid #284866',
-                backgroundColor: 'white',
+                color: 'white',
+                fontWeight: 450,
+                backgroundImage: 'linear-gradient(to right, #ffb347 0%, #ffcc33  75%, #ffb347  100%)',
                 borderRadius: '10px',
                 height: '48px',
-            }}
+                border: 'none',
+                width: '120px'
+            }}         
         >
             Subscribe
         </Button>
