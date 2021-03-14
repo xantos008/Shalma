@@ -6,7 +6,7 @@ import { SendOutlined } from '@ant-design/icons';
 function LivePreview({data}) {
 	console.log('data', data)
 	let bgColor
-	if(data.bgColor.length > 7){
+	if(data.bgColor && data.bgColor.length > 7){
 		bgColor = "url('" + data.bgColor + "')"
 	} else {
 		bgColor = data.bgColor

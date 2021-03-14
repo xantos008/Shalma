@@ -12,6 +12,8 @@ import { useAuth0 } from '@auth0/auth0-react';
 import TalkToUsModal from './TalkToUsModal';
 import { Menu, Dropdown } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
+import Card from './Card';
+import ContactCard from './ContactCard';
 
 const Home = () => {
     const { getIdTokenClaims } = useAuth0();
@@ -233,10 +235,23 @@ const Home = () => {
 				{inputList.map((x, i) => {
 					return (
 						<div className="domen" key={i ? i : 0}>
-							<input name="domens[]" key={i ? i : 0} value={x.value} onClick={e => handleDomenClick(e,i)} onFocus={e => handleOnFocus(e,i)} autoFocus={handleFocusChange(i)} placeholder="https://yoursite.address" onChange={e => handleDomenChange(e, i)} />
+							<input
+                                name="domens[]"
+                                key={i ? i : 0}
+                                value={x.value}
+                                onClick={e => handleDomenClick(e,i)}
+                                onFocus={e => handleOnFocus(e,i)} autoFocus={handleFocusChange(i)}
+                                placeholder="https://yoursite.address"
+                                onChange={e => handleDomenChange(e, i)}
+                                class="domain-input"
+                            />
 							<div className="addAndRemove">
 								{inputList.length - 1 === i && 
-									<div className="addDomen ant-btn ant-btn-primary" onClick={handleAddDomen}>
+									<div
+                                        className="addDomen ant-btn"
+                                        style={{ backgroundColor: '#82b14e', color: 'white', border: 'none' }}
+                                        onClick={handleAddDomen}
+                                    >
 										+
 									</div>
 								}
@@ -258,10 +273,24 @@ const Home = () => {
 				{inputList.map((x, i) => {
 					return (
 						<div className="domen" key={i ? i : 0}>
-							<input key={i ? i : 0} name="domens[]" onClick={e => handleDomenClick(e,i)} onFocus={e => handleOnFocus(e,i)} autoFocus={handleFocusChange(i)} value={x.value} placeholder="https://yoursite.address" onChange={e => handleDomenChange(e, i)} />
+							<input
+                                key={i ? i : 0}
+                                name="domens[]"
+                                onClick={e => handleDomenClick(e,i)}
+                                onFocus={e => handleOnFocus(e,i)}
+                                autoFocus={handleFocusChange(i)}
+                                value={x.value}
+                                placeholder="https://yoursite.address"
+                                onChange={e => handleDomenChange(e, i)}
+                                class="domain-input"
+                            />
 							<div className="addAndRemove">
 								{inputList.length - 1 === i && 
-									<div className="addDomen ant-btn ant-btn-primary" onClick={handleAddDomen}>
+									<div
+                                        className="addDomen ant-btn ant-btn-primary"
+                                        onClick={handleAddDomen}
+                                        style={{ backgroundColor: '#82b14e', color: 'white', border: 'none' }}
+                                    >
 										+
 									</div>
 								}
@@ -314,89 +343,107 @@ const Home = () => {
     const dt = dayjs(registrationDate);
 	
     return idKey ? (<Container className="home">
-        {showSubscribtionAlert && <SubscriptionButton />}
+        {showSubscribtionAlert && 
+            <div
+                style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    marginBottom: '30px',
+                }}>
+                <SubscriptionButton />
+            </div>
+        }
         {showSubscribtionAlert && <Row middle="xs">
-            <Col xs={12}>
+            <Col xs={4}>
                 <SubscriptionAlert startDate={dt} />
+            </Col>
+            <Col xs={4}>
+                <Card
+                    title="Site Key"
+                    bgColor="#2abbb5"
+                    bodyText={idKey}
+                    onClickCopy={() => copyIdClipBoardSuccess(idKey)}
+                />
+            </Col>
+            <Col xs={4}>
+                <Card
+                    title="Secret Key"
+                    bgColor="#2eb384"
+                    bodyText={secretKey}
+                    onClickCopy={() => copyKeyClipBoardSuccess(secretKey)}
+                />
             </Col>
         </Row>}
         <br />
-        <Row middle="xs">
-            <Col xs={1}>
-                Site Key:
-            </Col>
-            <Col xs={6}>
-                <Input value={idKey} disabled />
-            </Col>
-            <Col xs={4}>
-                <Button className="full-width" type="primary" onClick={(e) => {
-                        copyIdClipBoardSuccess(idKey);
+        <br />
+		
+        <div className="domainsListContainer">
+            <div style={{ marginBottom: '20px' }}>
+                <span
+                    style={{
+                        fontSize: '24px',
+                        fontWeight: 'bold',
+                        textAlign: 'start',
+                        color: '#484848',
                     }}>
-                    Copy Site Key
-                </Button>
-            </Col>
-        </Row>
-        <br />
-        <Row middle="xs">
-            <Col xs={1}>
-                Secret Key:
-            </Col>
-            <Col xs={6}>
-                <Input value={secretKey} disabled />
-            </Col>
-            <Col xs={4}>
-                <Button className="full-width" type="primary" onClick={(e) => {
-                        copyKeyClipBoardSuccess(secretKey);
-                    }}>
-                    Copy Secret Key
-                </Button>
-            </Col>
-        </Row>
+                        Domains List
+                </span>   
+            </div>
+            <DomensList />
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Col xs={4} style={{ justifySelf: 'flex-end' }}>
+                        <Button
+                            className="full-width"
+                            type="primary"
+                            onClick={handleUpdateDomens}
+                            style={{
+                                backgroundColor: '#6eb8aa',
+                                borderRadius: '10px',
+                                height: '48px',
+                                border: 'none'
+                            }}
+                        >
+                            Update Domains
+                        </Button>
+                    </Col>
+            </div>
+        </div>
 		
         <br />
         <br />
-		
-		<DomensList />
-		
-		<Row middle="xs">
-            <Col xs={4}>
-                <Button className="full-width" type="primary" onClick={handleUpdateDomens} style={{ marginBottom: '20px', marginRight: '20px' }}>
-                    Update Domains
-                </Button>
-            </Col>
-		</Row>
-		
-        <br />
-        <br />
-		
-        <Row middle="xs">
-            <Col xs={4}>
-                <Button type="primary" onClick={handleSalesCalendly} style={{ marginBottom: '20px', marginRight: '20px' }}>
-                    Talk to Sales
-                </Button>
-            </Col>
-            <Col xs={4}>
-                <Button type="primary" onClick={handleEngineerCalendly} style={{ marginBottom: '20px', marginRight: '20px' }}>
-                    Talk to Engineers
-                </Button>       
-            </Col>
-            <Col xs={4}>
-                <Button
-                    type="primary"
-                    href={TUTORIAL_URL}
-                    style={{ marginBottom: '20px', marginRight: '20px' }}
-                    target="_blank"
-                >
-                    Tutorial
-                </Button> 
-            </Col>
+		<Row middle="xs" style={{ padding: '20px' }}>
+            <div style={{ marginRight: '20px', marginBottom: '20px' }}>
+                <ContactCard type="sales" onContactClick={handleSalesCalendly} />
+            </div>
+            <div style={{ marginRight: '20px', marginBottom: '20px' }}>
+                <ContactCard type="engineer" onContactClick={handleEngineerCalendly} />
+            </div>
+            <Button
+                style={{
+                    backgroundColor: 'white',
+                    borderRadius: '10px',
+                    boxShadow: '0px 0px 6px rgba(0, 0, 0, 0.2)',
+                    height: '100px',
+                    width: 'fit-content',
+                    padding: '15px',
+                }}
+                target="_blank"
+                href={TUTORIAL_URL}
+            >
+                <div style={{ marginBottom: '10px' }}>
+                    <img src="/tutorial.png" width={70} height={70} alt="Tutorial" />
+                    <span style={{ fontWeight: 'bold', fontSize: '16px' }}> Tutorial </span>
+                </div>
+            </Button>
         </Row>
         {showCalendlyModal && (
-            <TalkToUsModal onClose={handleCloseCalendly} duration={calendlyDuration} />
+            <div style={{ width: '100vw' }}>
+                <TalkToUsModal onClose={handleCloseCalendly} duration={calendlyDuration} />
+            </div>
         )}
     </Container>): <Container className="home">
         <Row style={{ marginBottom: '30px' }}>
-            <Col xs={3} style={{ display: 'flex', marginLeft: '130px' }}>
+            <Col xs={3} style={{ display: 'flex' }}>
                 <Typography style={{ marginRight: '10px' }}> How did you hear about us? </Typography>
             </Col>
             <Col xs={6}>
@@ -422,7 +469,7 @@ const Home = () => {
         </Row>
         <Form>
             <Row>
-                <Col xs={3} style={{ display: 'flex', marginLeft: '130px' }}>
+                <Col xs={3} style={{ display: 'flex' }}>
                     App Name
                 </Col>
                 <Col xs={6}>
@@ -438,15 +485,38 @@ const Home = () => {
 			
             <br />
 			<br />
-			
-			<DomensList />
+            <div className="domainsListContainer">
+                <div style={{ marginBottom: '20px' }}>
+                    <span
+                        style={{
+                            fontSize: '24px',
+                            fontWeight: 'bold',
+                            textAlign: 'start',
+                            color: '#484848',
+                        }}>
+                            Domains List
+                    </span>   
+                </div>
+                <DomensList />
+            </div>
 			
 			<br />
 			<br />
 			
             <Row center="xs">
                 <Col xs={12}>
-                <Button disabled={!formData.appName || (formData.domens && formData.domens[0] && formData.domens[0].value.length === 0)} onClick={handleRegisterApp} size="large" type="primary">
+                <Button
+                    disabled={!formData.appName || (formData.domens && formData.domens[0] && formData.domens[0].value.length === 0)}
+                    onClick={handleRegisterApp}
+                    size="large"
+                    type="primary"
+                    style={{
+                        backgroundColor: '#6eb8aa',
+                        borderRadius: '10px',
+                        height: '48px',
+                        border: 'none'
+                    }}
+                >
                     Next
                 </Button>
                 </Col>
