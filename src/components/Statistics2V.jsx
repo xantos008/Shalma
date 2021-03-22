@@ -1,5 +1,5 @@
 import { Skeleton, Table, Tag } from "antd";
-import { useMemo, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { getAppData } from "../services/customerApi";
 
 const columns = [
