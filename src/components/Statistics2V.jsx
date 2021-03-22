@@ -93,17 +93,6 @@ const NewStatistics = () => {
     setRefs(data.rows);
   }
 
-  const totalUpgraded = useMemo(
-    () =>
-      refs.reduce((acc, val) => (val.status === "redeemed" ? acc + 1 : acc), 0),
-    [refs]
-  );
-  const totalPendingInvites = useMemo(
-    () =>
-      refs.reduce((acc, val) => (val.status === "pending" ? acc + 1 : acc), 0),
-    [refs]
-  );
-
   useEffect(() => {
     fetchRefs();
   }, []);
@@ -115,9 +104,6 @@ const NewStatistics = () => {
       ) : (
         <Table
           pagination={false}
-          footer={() =>
-            `Total Converted Referrals: $${totalUpgraded}; Total Pending Referrals: $${totalPendingInvites}`
-          }
           columns={columns}
           dataSource={refs}
           bordered
