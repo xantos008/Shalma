@@ -1,7 +1,6 @@
 import { Skeleton, Table, Tag } from "antd";
 import { useMemo, useState, useEffect } from "react";
 import { getAppData } from "../services/customerApi";
-import styles from "./invite.module.scss";
 
 const columns = [
   {
@@ -110,7 +109,7 @@ const NewStatistics = () => {
   }, []);
 
   return (
-    <div className={styles["referral-shopify_table"]}>
+    <div>
       {loading ? (
         <Skeleton active />
       ) : (
