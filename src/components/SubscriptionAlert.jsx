@@ -1,39 +1,27 @@
 import React from 'react';
 import dayjs from 'dayjs';
-import { Card } from 'antd';
-import ProgressBar from './ProgressBar';
+
+import { Alert, ProgressBar } from "react-bootstrap";
 
 const SubscriptionAlert = ({ startDate, maxDays = 14 }) => {
+
     const nowDate = dayjs();
+    
     const stDate = dayjs(startDate);
+    
     const diff = maxDays - nowDate.diff(stDate, "days");
-    const progressPercentage = diff * 100 / maxDays;
+
+    const progressPercentage = ((maxDays - (diff < 0 ? 0 : diff)) / maxDays) * 100;
 
     return (
-        <Card
-            style={{
-                backgroundColor: '#284866',
-                color: 'white',
-                borderRadius: '10px',
-        }}>
-            <div style={{ marginBottom: '10px' }}>
-                <span style={{ fontWeight: 'bold' }}> {diff} out of 14 </span>
-            </div>
-            <div style={{ width: '100%', marginBottom: '10px' }}>
-                <ProgressBar completed={progressPercentage} />
-            </div>
-            <div>
-                <span> days of free subscription plan </span> 
-            </div>
-        </Card>
+          <>
+               <Alert variant="primary border-0 progress-status">
+                    <div className="mb-2"><strong>{ diff < 0 ? 0 : diff } out of 14</strong></div>
+                    <ProgressBar variant="primary" now={progressPercentage} />
+                    <div className="mt-2"> days of free subscription plan </div> 
+               </Alert>
+          </>
     );
-    // if(diff > 0){
-    //     return <Alert message={`You have ${diff} days of free subscription plan`} type="info" />;
-    // }else if(diff === 0){
-    //     return <Alert message={`This is your last day of free subscription, please subscribe to a plan`} type="warning" />;
-    // }else{
-    //     return <Alert message="You must renew your membership to continue using the app" type="error" />;
-    // }
 }
 
 export default SubscriptionAlert;

@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
-import { Container} from 'reactstrap';
+
 import ColorPicker from "../store/ColorPicker";
 
 import LivePreview from '../components/LivePreview';
 
 import { updateAppUiPreferences } from '../services/customerApi';
+
+import { Container, Row, Card } from "react-bootstrap";
+
 function Customize() {
   const [formData, setFormData] = useState(
   localStorage.getItem('uiPreferences') !== "undefined" ? JSON.parse(localStorage.getItem('uiPreferences')) : {
@@ -84,79 +87,86 @@ function Customize() {
       }
     };
     return (
-	<Container>
-		<div className="settingForm">
-			
-			<div className="form-field">
-			  <div className="field-title">
-				Background:
-			  </div>
-			  <div className="field-selection">
-				<select name="giveChoise" onChange={selectionChange} >
-					<option value="0">Choose type</option>
-					<option value="1">Color</option>
-					<option value="2">Picture</option>
-				</select>
-			  </div>
-			  {showColorBackground && (
-			  <div className="colorPicker">
-				  <ColorPicker
-					onColorChange={onColorPickerInfoChangeBackground}
-					title={styles.title}
-					labelStyle={styles.labelStyle}
-					colorTextBoxStyle={styles.colorTextBoxStyle}
-					pickerType={"Chrome"}
-					color={formData.bgColor}
-				  />
-			  </div>
-			  )}
-			  {!showColorBackground && (
-				<input type="text" name="backgroundPicture" placeholder="https://yoursite.url/path/to/image.jpg" value={formData.bgColor || ''} onChange={setFormDataPicture} />
-			  )}
-		  </div>
-		  <div className="form-field">
-			  <div className="field-title">
-				Text color:
-			  </div>
-			  <div className="colorPicker">
-				  <ColorPicker
-					onColorChange={onColorPickerInfoChangeText}
-					title={styles.title}
-					labelStyle={styles.labelStyle}
-					colorTextBoxStyle={styles.colorTextBoxStyle}
-					pickerType={"Chrome"}
-					color={formData.textColor}
-				  />
-			  </div>
-		  </div>
-		  <div className="form-field">
-			  <div className="field-title">
-				Text color:
-			  </div>
-			  <div className="colorPicker">
-				  <input type="text" name="heading" value={formData.heading || ''} onChange={setFormDataHeding} />
-			  </div>
-		  </div>
-		  <div className="form-field">
-			  <div className="field-title">
-				Text message:
-			  </div>
-			  <div className="colorPicker">
-				  <input type="text" name="textMessage" value={formData.textMessage || ''} onChange={setFormDataTextMessage} />
-			  </div>
-		  </div>
-		</div>
-		<button className="ant-btn ant-btn-primary settingsButton" onClick={handleUpdateUi}>
-			Save
-		</button>
-		
-		<div className="previewText">
-			Preview
-		</div>
-		
-		<LivePreview data={formData} />
-		
-	</Container>
+     <>
+     <div className="customize_page p-4">
+     	<Container>
+               <Row>
+                    <Card className="col-md-12 p-4 border-0">
+          		<div className="settingForm">
+          			
+          			<div className="form-field">
+          			  <div className="field-title">
+          				Background:
+          			  </div>
+          			  <div className="field-selection">
+          				<select name="giveChoise" onChange={selectionChange} >
+          					<option value="0">Choose type</option>
+          					<option value="1">Color</option>
+          					<option value="2">Picture</option>
+          				</select>
+          			  </div>
+          			  {showColorBackground && (
+          			  <div className="colorPicker">
+          				  <ColorPicker
+          					onColorChange={onColorPickerInfoChangeBackground}
+          					title={styles.title}
+          					labelStyle={styles.labelStyle}
+          					colorTextBoxStyle={styles.colorTextBoxStyle}
+          					pickerType={"Chrome"}
+          					color={formData.bgColor}
+          				  />
+          			  </div>
+          			  )}
+          			  {!showColorBackground && (
+          				<input type="text" name="backgroundPicture" placeholder="https://yoursite.url/path/to/image.jpg" value={formData.bgColor || ''} onChange={setFormDataPicture} />
+          			  )}
+          		  </div>
+          		  <div className="form-field">
+          			  <div className="field-title">
+          				Text color:
+          			  </div>
+          			  <div className="colorPicker">
+          				  <ColorPicker
+          					onColorChange={onColorPickerInfoChangeText}
+          					title={styles.title}
+          					labelStyle={styles.labelStyle}
+          					colorTextBoxStyle={styles.colorTextBoxStyle}
+          					pickerType={"Chrome"}
+          					color={formData.textColor}
+          				  />
+          			  </div>
+          		  </div>
+          		  <div className="form-field">
+          			  <div className="field-title">
+          				Text color:
+          			  </div>
+          			  <div className="colorPicker">
+          				  <input type="text" name="heading" value={formData.heading || ''} onChange={setFormDataHeding} />
+          			  </div>
+          		  </div>
+          		  <div className="form-field">
+          			  <div className="field-title">
+          				Text message:
+          			  </div>
+          			  <div className="colorPicker">
+          				  <input type="text" name="textMessage" value={formData.textMessage || ''} onChange={setFormDataTextMessage} />
+          			  </div>
+          		  </div>
+          		</div>
+          		<button className="ant-btn ant-btn-primary settingsButton" onClick={handleUpdateUi}>
+          			Save
+          		</button>
+          		
+          		<div className="previewText">
+          			Previews
+          		</div>
+          		
+          		<LivePreview data={formData} />
+                    </Card>
+     		</Row>
+     	</Container>
+     </div>
+     </>
     );
 }
 

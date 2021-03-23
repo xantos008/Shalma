@@ -14,7 +14,7 @@ function LivePreview({data}) {
 	return (
 	<Container style={{background: bgColor || 'white'}} className="container_content">
 		<Row center="xs">
-			<h1 style={{color: data.textColor || "black"}}>{data.heading || "Invite Your Friends"}</h1>
+			<h1 style={{ color: data.textColor || "black"}}>{data.heading || "Invite Your Friends"}</h1>
 		</Row>
 		<Row className="container_row" center="xs">
 			  <Col>
