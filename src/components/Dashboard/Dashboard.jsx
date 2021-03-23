@@ -42,6 +42,8 @@ const Dashboard = () => {
           appName: generateAppName(10),
           domens: inputList
      });     
+	 
+	 console.log(adsMethod);
     
      async function setToken(){
         setIsLoading(true);
